@@ -1,5 +1,4 @@
-
-    :root {
+:root {
   --bg: #f7f8fb;
   --bg-soft: #ffffff;
   --surface: rgba(255, 255, 255, 0.82);
@@ -529,13 +528,16 @@ button {
   color: var(--text-muted);
   font-size: 0.95rem;
 }
-.about{
+
+.about {
   overflow: hidden;
 }
+
 .profile-body,
 .about-body {
   padding: 28px;
 }
+
 
 .about-body h3 {
   margin: 0 0 14px;
@@ -587,7 +589,7 @@ button {
   gap: 14px;
 }
 
-.skill-group img{width: 30px;}
+
 
 .skill-group {
   padding: 18px;
@@ -605,6 +607,11 @@ button {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  align-items: center;
+}
+
+.skill-group img {
+  width: 30px;
 }
 
 .tag a {
@@ -670,14 +677,15 @@ button {
   font-size: 2rem;
   letter-spacing: -0.04em;
 }
+
 /* 브랜드별 색상 start */
 /* 이 부분을 지우면 포트폴리오 메인 컬러를 사용하실 수 있습니다. */
 .brand1_color h3 {
-  color: #c4b02a;
+  color: #7FE6D7;
 }
 
 .brand1_color .tag a {
-  background-color: #c4b02a;
+  background-color: #7FE6D7;
   color: #fff;
 }
 
@@ -940,8 +948,9 @@ button {
   color: #252525;
   font-size: 0.88rem;
 }
+
 .works-stack .thumb-overlay strong,
-.thumb-overlay span{
+.thumb-overlay span {
   color: #fff;
 }
 
@@ -1002,17 +1011,20 @@ button {
   bottom: 0;
   z-index: 2;
 }
+
 /* skill icon */
-.skills-icon{
-      display: grid;
-    grid-auto-flow: column;
-    justify-content: start;
-    gap: 10px;
+.skills-icon {
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: start;
+  gap: 10px;
 }
-.skills-icon img{
+
+.skills-icon img {
   width: 30px;
 }
-.thumb-explanation{
+
+.thumb-explanation {
   height: 52px;
 }
 
@@ -1033,7 +1045,7 @@ button {
 }
 
 .site-footer {
-    padding: 60px 0 120px;
+  padding: 60px 0 120px;
   border-top: 1px solid rgba(17, 24, 39, 0.06);
   color: var(--text-muted);
   background: rgba(255, 255, 255, 0.65);
@@ -1722,7 +1734,7 @@ template {
   .hero {
     min-height: auto;
     padding-top: 64px;
-            padding-bottom: 80px;
+    padding-bottom: 80px;
   }
 
   .hero-inner {
@@ -1731,15 +1743,18 @@ template {
     grid-template-columns: 1fr; */
     bottom: -50px;
   }
-.scroll-indicator {
-  display: none;
-}
+
+  .scroll-indicator {
+    display: none;
+  }
+
   .hero-video {
     position: inherit;
     height: 500px;
     /* mobile영상높이 */
-}
-  .hero-actions{
+  }
+
+  .hero-actions {
     justify-content: center;
   }
 
