@@ -712,11 +712,11 @@ button {
 }
 
 .brand2_color h3 {
-  color: orangered;
+  color: #00A1FF ;
 }
 
 .brand2_color .tag a {
-  background-color: orangered;
+  background-color: #00A1FF ;
   color: #fff;
 }
 
@@ -731,7 +731,7 @@ button {
 }
 
 .brand2_color .point-color a:hover {
-  background-color: orangered;
+  background-color: #00A1FF ;
   color: #fff;
 }
 
