@@ -37,6 +37,47 @@ body {
   overflow-x: hidden;
 }
 
+.root{  --accent: #315CFF;
+  --accent-2: #A78BFA;}
+
+  #works {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    rgba(49, 92, 255, 0.045) 45%,
+    rgba(167, 139, 250, 0.055) 75%,
+    #ffffff 100%
+  );
+}
+
+body {
+  background:
+    radial-gradient(
+      circle at 5% 20%,
+      rgba(255, 111, 145, 0.18),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 95% 75%,
+      rgba(70, 91, 255, 0.16),
+      transparent 30%
+    ),
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #fff8f7 48%,
+      #f7f8ff 78%,
+      #ffffff 100%
+    );
+}
+
+#works .work-row {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(14px);
+}
 img,
 video {
   display: block;
