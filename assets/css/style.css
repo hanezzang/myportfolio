@@ -808,8 +808,20 @@ button {
 
 .brand-track>.brand-thumb {
   width: min(360px, 32vw);
+  
 }
 
+.brand-thumb > a,
+.brand-thumb > a > img,
+.brand-thumb > a > video {
+  width: 100%;
+  height: 100%;
+}
+
+.brand-thumb > a > img,
+.brand-thumb > a > video {
+  object-fit: cover;
+}
 .thumb-track>.thumb-card {
   width: min(280px, 24vw);
 }
