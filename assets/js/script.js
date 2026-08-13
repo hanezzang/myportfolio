@@ -320,7 +320,9 @@
       if (!firstItem) return Math.max(track.clientWidth * 0.85, 320);
 
       const trackStyle = window.getComputedStyle(track);
-      const itemWidth = firstItem.getBoundingClientRect().width;
+      // offsetWidth는 3D 회전(rotateY) 같은 transform의 영향을 받지 않는 실제 레이아웃 너비라
+      // 슬라이더 이동 거리 계산에 더 안전합니다.
+      const itemWidth = firstItem.offsetWidth;
       const gap = parseFloat(trackStyle.columnGap || trackStyle.gap || '0') || 0;
 
       return itemWidth + gap;
@@ -334,10 +336,32 @@
       });
     }
 
+    // 버튼과 트랙을 id로 매칭하지 않고, 버튼을 기준으로 DOM에서
+    // 가장 가까운(같은 섹션 안의) .slider-track을 항상 우선 찾습니다.
+    // id는 정말 못 찾았을 때만 최후 수단으로 사용합니다.
+    // → 슬라이더 섹션을 복사해서 늘리고 트랙 id만 새로 바꾼 경우
+    //    (버튼의 data-slider-prev/next 값을 안 고쳐도) 항상 자기
+    //    바로 옆의 트랙을 올바르게 제어합니다.
+    function findAssociatedTrack(button) {
+      let el = button.parentElement;
+      while (el && el !== document.body) {
+        const track = el.querySelector('.slider-track');
+        if (track) return track;
+        el = el.parentElement;
+      }
+
+      const trackId = button.dataset.sliderPrev || button.dataset.sliderNext;
+      if (trackId) {
+        const byId = document.getElementById(trackId);
+        if (byId && byId.classList.contains('slider-track')) return byId;
+      }
+
+      return null;
+    }
+
     document.querySelectorAll('[data-slider-prev], [data-slider-next]').forEach((button) => {
       button.addEventListener('click', () => {
-        const trackId = button.dataset.sliderPrev || button.dataset.sliderNext;
-        const track = document.getElementById(trackId);
+        const track = findAssociatedTrack(button);
         if (!track) return;
 
         const direction = button.hasAttribute('data-slider-next') ? 1 : -1;
@@ -497,53 +521,20 @@
       });
     });
 
-    // 자동재생이 막힌 경우(주로 맥 Safari) 대기열에 넣고, 첫 사용자 인터랙션(클릭/스크롤/터치) 시 한 번에 재생 시도
-    const pendingAutoplay = new Set();
-
-    function resumePendingAutoplay() {
-      pendingAutoplay.forEach((video) => video.play().catch(() => { }));
-      pendingAutoplay.clear();
-    }
-
-    document.addEventListener('click', resumePendingAutoplay, { once: true });
-    document.addEventListener('scroll', resumePendingAutoplay, { once: true });
-    document.addEventListener('touchstart', resumePendingAutoplay, { once: true });
-
-    function safePlay(video) {
-      const playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          pendingAutoplay.add(video);
-        });
-      }
-    }
-
-    // HTML에 autoplay 속성이 붙은 영상(메인 배너 등)은 모바일/데스크톱 관계없이 무조건 자동재생 시도
-    document.querySelectorAll('video[autoplay]').forEach((video) => {
-      safePlay(video);
-    });
-
-    // 실제 마우스 호버가 가능한 기기(PC)인지 판별. 터치 기기는 false.
-    const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-
     const reelCards = document.querySelectorAll('#videoTrack .reels-thumb');
 
     reelCards.forEach((card) => {
       const video = card.querySelector('.thumb-video');
       if (!video) return;
 
-      if (!canHover) {
-        // 모바일/터치 기기: 재생버튼 없이 항상 자동재생 (기존 동작 유지)
-        card.classList.add('is-playing');
-        video.muted = true;
-        safePlay(video);
-        return;
-      }
-
-      card.addEventListener('mouseenter', () => {
-        card.classList.add('is-playing');
-        video.currentTime = 0;
-        safePlay(video);
+      card.addEventListener('mouseenter', async () => {
+        try {
+          card.classList.add('is-playing');
+          video.currentTime = 0;
+          await video.play();
+        } catch (error) {
+          console.log('video play error:', error);
+        }
       });
 
       card.addEventListener('mouseleave', () => {
@@ -559,15 +550,11 @@
       const video = card.querySelector('.thumb-video');
       if (!video) return;
 
-      if (!canHover) {
-        video.muted = true;
-        safePlay(video);
-        return;
-      }
-
-      card.addEventListener('mouseenter', () => {
-        video.currentTime = 0;
-        safePlay(video);
+      card.addEventListener('mouseenter', async () => {
+        try {
+          video.currentTime = 0;
+          await video.play();
+        } catch (e) { }
       });
 
       card.addEventListener('mouseleave', () => {
